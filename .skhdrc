@@ -128,19 +128,23 @@ cmd - j : chunkc tiling::window --focus prev
 #cmd - k : chunkc tiling::window --focus next
 
 # equalize size of windows
-shift + alt - 0 : chunkc tiling::desktop --equalize
+alt - 0 : chunkc tiling::desktop --equalize
 
 # swap window
-shift + alt - h : chunkc tiling::window --swap west
-shift + alt - j : chunkc tiling::window --swap south
-shift + alt - k : chunkc tiling::window --swap north
-shift + alt - l : chunkc tiling::window --swap east
+#shift + alt - h : chunkc tiling::window --swap west
+#shift + alt - j : chunkc tiling::window --swap south
+#shift + alt - k : chunkc tiling::window --swap north
+#shift + alt - l : chunkc tiling::window --swap east
 
 # move window
-shift + cmd - h : chunkc tiling::window --warp west
-shift + cmd - j : chunkc tiling::window --warp south
-shift + cmd - k : chunkc tiling::window --warp north
-shift + cmd - l : chunkc tiling::window --warp east
+shift + alt - h : chunkc tiling::window --warp west
+shift + alt - j : chunkc tiling::window --warp south
+shift + alt - k : chunkc tiling::window --warp north
+shift + alt - l : chunkc tiling::window --warp east
+#shift + cmd - h : chunkc tiling::window --warp west
+#shift + cmd - j : chunkc tiling::window --warp south
+#shift + cmd - k : chunkc tiling::window --warp north
+#shift + cmd - l : chunkc tiling::window --warp east
 
 # make floating window fill screen
 #shift + alt - up     : chunkc tiling::window --grid-layout 1:1:0:0:1:1
@@ -164,38 +168,44 @@ shift + cmd - n : chunkc tiling::desktop --create;\
 #                id=$(chunkc tiling::query --desktops-for-monitor $(chunkc tiling::query --monitor-for-desktop $(chunkc tiling::query --desktop id)));\
 #                chunkc tiling::desktop --focus $(echo ${id##* })
 # destroy desktop
-cmd + alt - w : chunkc tiling::desktop --annihilate
+#cmd + alt - w : chunkc tiling::desktop --annihilate
 
 # fast focus desktop
-cmd + alt - x : chunkc tiling::desktop --focus $(chunkc get _last_active_desktop)
-cmd + alt - z : chunkc tiling::desktop --focus prev
-cmd + alt - c : chunkc tiling::desktop --focus next
-cmd + alt - 1 : chunkc tiling::desktop --focus 1
-cmd + alt - 2 : chunkc tiling::desktop --focus 2
-cmd + alt - 3 : chunkc tiling::desktop --focus 3
-cmd + alt - 4 : chunkc tiling::desktop --focus 4
-cmd + alt - 5 : chunkc tiling::desktop --focus 5
-cmd + alt - 6 : chunkc tiling::desktop --focus 6
-cmd + alt - 7 : chunkc tiling::desktop --focus 7
-cmd + alt - 8 : chunkc tiling::desktop --focus 8
-cmd + alt - 9 : chunkc tiling::desktop --focus 9
-cmd + alt - 0 : chunkc tiling::desktop --focus 10
+#cmd + alt - x : chunkc tiling::desktop --focus $(chunkc get _last_active_desktop)
+#cmd + alt - z : chunkc tiling::desktop --focus prev
+#cmd + alt - c : chunkc tiling::desktop --focus next
+#cmd + alt - 1 : chunkc tiling::desktop --focus 1
+#cmd + alt - 2 : chunkc tiling::desktop --focus 2
+#cmd + alt - 3 : chunkc tiling::desktop --focus 3
+#cmd + alt - 4 : chunkc tiling::desktop --focus 4
+#cmd + alt - 5 : chunkc tiling::desktop --focus 5
+#cmd + alt - 6 : chunkc tiling::desktop --focus 6
+#cmd + alt - 7 : chunkc tiling::desktop --focus 7
+#cmd + alt - 8 : chunkc tiling::desktop --focus 8
+#cmd + alt - 9 : chunkc tiling::desktop --focus 9
+#cmd + alt - 0 : chunkc tiling::desktop --focus 10
 
 # send window to desktop and follow focus
 	# Note: for uulrika, the focus function doesn't work.
+alt - 1 : chunkc tiling::window --send-to-desktop 1; chunkc tiling::desktop --focus 1
+alt - 2 : chunkc tiling::window --send-to-desktop 2; chunkc tiling::desktop --focus 2
+alt - 3 : chunkc tiling::window --send-to-desktop 3; chunkc tiling::desktop --focus 3
+alt - 4 : chunkc tiling::window --send-to-desktop 4; chunkc tiling::desktop --focus 4
+alt - 5 : chunkc tiling::window --send-to-desktop 5; chunkc tiling::desktop --focus 5
+alt - 6 : chunkc tiling::window --send-to-desktop 6; chunkc tiling::desktop --focus 6
 #shift + cmd - x : chunkc tiling::window --send-to-desktop $(chunkc get _last_active_desktop); chunkc tiling::desktop --focus $(chunkc get _last_active_desktop)
 #shift + cmd - z : chunkc tiling::window --send-to-desktop prev; chunkc tiling::desktop --focus prev
 #shift + cmd - c : chunkc tiling::window --send-to-desktop next; chunkc tiling::desktop --focus next
-shift + cmd - 1 : chunkc tiling::window --send-to-desktop 1; chunkc tiling::desktop --focus 1
-shift + cmd - 2 : chunkc tiling::window --send-to-desktop 2; chunkc tiling::desktop --focus 2
-shift + cmd - 3 : chunkc tiling::window --send-to-desktop 3; chunkc tiling::desktop --focus 3
-shift + cmd - 4 : chunkc tiling::window --send-to-desktop 4; chunkc tiling::desktop --focus 4
-shift + cmd - 5 : chunkc tiling::window --send-to-desktop 5; chunkc tiling::desktop --focus 5
-shift + cmd - 6 : chunkc tiling::window --send-to-desktop 6; chunkc tiling::desktop --focus 6
-shift + cmd - 7 : chunkc tiling::window --send-to-desktop 7; chunkc tiling::desktop --focus 7
-shift + cmd - 8 : chunkc tiling::window --send-to-desktop 8; chunkc tiling::desktop --focus 8
-shift + cmd - 9 : chunkc tiling::window --send-to-desktop 9; chunkc tiling::desktop --focus 9
-shift + cmd - 0 : chunkc tiling::window --send-to-desktop 10; chunkc tiling::desktop --focus 10
+#shift + cmd - 1 : chunkc tiling::window --send-to-desktop 1; chunkc tiling::desktop --focus 1
+#shift + cmd - 2 : chunkc tiling::window --send-to-desktop 2; chunkc tiling::desktop --focus 2
+#shift + cmd - 3 : chunkc tiling::window --send-to-desktop 3; chunkc tiling::desktop --focus 3
+#shift + cmd - 4 : chunkc tiling::window --send-to-desktop 4; chunkc tiling::desktop --focus 4
+#shift + cmd - 5 : chunkc tiling::window --send-to-desktop 5; chunkc tiling::desktop --focus 5
+#shift + cmd - 6 : chunkc tiling::window --send-to-desktop 6; chunkc tiling::desktop --focus 6
+#shift + cmd - 7 : chunkc tiling::window --send-to-desktop 7; chunkc tiling::desktop --focus 7
+#shift + cmd - 8 : chunkc tiling::window --send-to-desktop 8; chunkc tiling::desktop --focus 8
+#shift + cmd - 9 : chunkc tiling::window --send-to-desktop 9; chunkc tiling::desktop --focus 9
+#shift + cmd - 0 : chunkc tiling::window --send-to-desktop 10; chunkc tiling::desktop --focus 10
 
 # focus monitor
 #ctrl + alt - z  : chunkc tiling::monitor -f prev
@@ -212,16 +222,16 @@ shift + cmd - 0 : chunkc tiling::window --send-to-desktop 10; chunkc tiling::des
 #ctrl + cmd - 3  : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
 
 # increase region size
-shift + alt - a : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge west
-shift + alt - s : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge south
-shift + alt - w : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge north
-shift + alt - d : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge east
+alt - y : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge west
+alt - u : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge south
+alt - i : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge north
+alt - o : chunkc tiling::window --use-temporary-ratio 0.1 --adjust-window-edge east
 
 # decrease region size
-shift + cmd - a : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge west
-shift + cmd - s : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge south
-shift + cmd - w : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge north
-shift + cmd - d : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge east
+alt + cmd - y : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge west
+alt + cmd - u : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge south
+alt + cmd - i: chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge north
+alt + cmd - o : chunkc tiling::window --use-temporary-ratio -0.1 --adjust-window-edge east
 
 # set insertion point for focused container
 ctrl + alt - f : chunkc tiling::window --use-insertion-point cancel
