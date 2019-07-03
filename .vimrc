@@ -26,18 +26,18 @@ set softtabstop=0
 set tabstop=4
 
 "disable arrow keys
-no <down> <Nop>
+"no <down> <Nop>
 no <left> <Nop>
 no <right> <Nop>
-no <up> <Nop>
-ino <down> <Nop>
+"no <up> <Nop>
+"ino <down> <Nop>
 ino <left> <Nop>
 ino <right> <Nop>
-ino <up> <Nop>
-vno <down> <Nop>
+"ino <up> <Nop>
+"vno <down> <Nop>
 vno <left> <Nop>
 vno <right> <Nop>
-vno <up> <Nop>
+"vno <up> <Nop>
 
 "visual setting
 syntax on
@@ -130,3 +130,18 @@ set cursorline!
 
 "use pandoc to transfer the current .md file to .pdf
 map <leader>m :!pandoc -f markdown "%" --pdf-engine=xelatex -o "%".pdf<CR><CR>
+
+"complie the java source code
+map <leader>v :!clear;javac % <CR>
+
+"run the complied binary java file
+"map <leader>r :!clear;java %:r<CR>
+map <leader>r :call RunJava() <CR>
+
+function RunJava()
+	:!clear;javac %
+	if v:shell_error
+	else
+		:!java %:r
+	end
+endfunction
