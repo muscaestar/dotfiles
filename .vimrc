@@ -73,7 +73,7 @@ highlight ColorColumn ctermbg=Green
 call matchadd('ColorColumn', '\%81v', 100) 
 
 "Shady Character
-set listchars=tab:‣·
+set listchars=tab:>·
 "set listchars+=eol:¬
 set list
 
