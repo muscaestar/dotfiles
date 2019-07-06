@@ -78,8 +78,10 @@ set listchars=tab:>·
 set list
 
 "Copy and Paste through system clipboard
-map <C-c> :w !pbcopy<CR><CR>
-map <C-p> :r !pbpaste<CR>
+if has("mac")
+	map <C-c> :w !pbcopy<CR><CR>
+	map <C-p> :r !pbpaste<CR>
+endif
 
 " Smooth Scroll
 	"
