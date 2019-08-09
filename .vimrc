@@ -16,6 +16,9 @@ call plug#end()
 
 let mapleader =" "
 
+"当文件在外部被修改时，自动更新该文件"
+set autoread
+
 "tab config
 set shiftwidth=4
 set noexpandtab
@@ -73,7 +76,7 @@ highlight ColorColumn ctermbg=Green
 call matchadd('ColorColumn', '\%81v', 100) 
 
 "Shady Character
-set listchars=tab:>·
+set listchars=tab:\|\ 
 "set listchars+=eol:¬
 set list
 
@@ -144,6 +147,7 @@ function RunJava()
 	:!clear;javac %
 	if v:shell_error
 	else
+		:!echo "Compiling finished.\nReady to Run."
 		:!java %:r
 	end
 endfunction
