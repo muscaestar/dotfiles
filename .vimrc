@@ -12,11 +12,12 @@ Plug 'https://tpope.io/vim/repeat.git'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 call plug#end()
 
 let mapleader =" "
 
-"当文件在外部被修改时，自动更新该文件"
+"Auto update the file when it's modified outside
 set autoread
 
 "tab config
@@ -134,7 +135,7 @@ endif
 set cursorline! 
 
 "use pandoc to transfer the current .md file to .pdf
-map <leader>m :!pandoc -f markdown "%" --pdf-engine=xelatex -o "%".pdf<CR><CR>
+map <leader>m :!pandoc -f markdown "%" --pdf-engine=xelatex -o "%:r".pdf<CR><CR>
 
 "complie the java source code
 map <leader>v :!clear;javac % <CR>
@@ -151,3 +152,5 @@ function RunJava()
 		:!java %:r
 	end
 endfunction
+
+set rtp+=~/.fzf
