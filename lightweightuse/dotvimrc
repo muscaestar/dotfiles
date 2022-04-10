@@ -1,0 +1,26 @@
+" a light weight config withoug any outside dependencies
+set nocompatible
+filetype plugin on
+
+set shiftwidth=4 softtabstop=4 expandtab
+set autoindent
+set copyindent
+
+set number
+set wildmenu
+set wildmode=full
+set ruler
+
+syntax on
+set hlsearch
+set incsearch
+nnoremap <slient> <C-l> :<C-u>nohlsearch<CR><C-l>
+
+set ignorecase
+set smartcase
+
+set autoread
+set laststatus=2
+
+:hi CursorLine cterm=NONE ctermbg=black 
+set cursorline!
