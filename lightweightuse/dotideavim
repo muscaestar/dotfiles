@@ -1,0 +1,9 @@
+set showmode
+
+set relativenumber
+set number
+
+set keep-english-in-normal
+
+
+set ideajoin
