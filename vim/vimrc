@@ -1,0 +1,37 @@
+" Minimal Vim config for Ubuntu-first workflow
+" Focus: fast startup, practical defaults, zero plugin dependency
+
+set nocompatible
+filetype plugin indent on
+
+" Indent style: 4 spaces (A plan)
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set autoindent
+
+" UI and navigation
+set number
+set relativenumber
+set cursorline
+set wildmenu
+set wildmode=longest:full,full
+set splitright
+set splitbelow
+
+" Search behavior
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+
+" Editing behavior
+set autoread
+set hidden
+set noswapfile
+set undofile
+set undodir=~/.vim/undo
+
+let mapleader=" "
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>

@@ -1,0 +1,45 @@
+# Minimal Bash config for Ubuntu-first workflow
+# Focus: practical defaults, low maintenance, no external framework
+
+# Apply only to interactive shells
+case "$-" in
+  *i*) ;;
+  *) return ;;
+esac
+
+# Keep command history useful and deduplicated
+HISTSIZE=5000
+HISTFILESIZE=10000
+HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
+
+# Better interactive behavior
+set -o vi
+shopt -s checkwinsize
+
+# Core environment
+export EDITOR=vim
+export PAGER=less
+
+# Append path entries only when directory exists and not yet included
+append_path() {
+  local path_dir="$1"
+  if [[ -d "$path_dir" && ":$PATH:" != *":$path_dir:"* ]]; then
+    PATH="$PATH:$path_dir"
+  fi
+}
+
+append_path "$HOME/.local/bin"
+append_path "$HOME/bin"
+export PATH
+
+# Minimal aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias grep='grep --color=auto'
+
+# Minimal helper function
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
