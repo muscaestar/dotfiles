@@ -29,3 +29,8 @@ All notable changes to this repository are documented in this file.
 
 ### Notes
 - `tmux`, `fzf`, `mosh`, and full `opencode` setup remain TODO in `setup.sh`.
+
+### Changed (prompt)
+- Updated `bash/bashrc` prompt to show current git branch in prompt.
+- Simplified prompt path display to current directory only.
+- Removed host from prompt and added color distinction for user, directory, and git branch.

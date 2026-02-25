@@ -43,3 +43,30 @@ alias grep='grep --color=auto'
 mkcd() {
   mkdir -p "$1" && cd "$1"
 }
+
+# Prompt: show current git branch when inside a git repository
+__musca_git_branch() {
+  local branch_name
+  if ! command -v git >/dev/null 2>&1; then
+    return 0
+  fi
+
+  branch_name="$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || true)"
+  if [[ -n "$branch_name" ]]; then
+    printf ' (%s)' "$branch_name"
+  fi
+}
+
+__musca_prompt_command() {
+  local c_reset='\[\e[0m\]'
+  local c_user='\[\e[1;32m\]'
+  local c_dir='\[\e[1;34m\]'
+  local c_git='\[\e[0;36m\]'
+
+  PS1="${c_user}\\u${c_reset}:${c_dir}\\W${c_reset}${c_git}\$(__musca_git_branch)${c_reset}\\$ "
+}
+
+if [[ -z "${MUSCA_PROMPT_INITIALIZED:-}" ]]; then
+  PROMPT_COMMAND="${PROMPT_COMMAND:+${PROMPT_COMMAND}; }__musca_prompt_command"
+  MUSCA_PROMPT_INITIALIZED=1
+fi
