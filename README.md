@@ -25,7 +25,7 @@
 
 - [x] vim
 - [x] bash
-- [ ] tmux
+- [x] tmux
 - [ ] fzf
 - [ ] mosh
 - [ ] opencode
@@ -65,7 +65,8 @@
 	- `setup.sh` 已作为统一入口
 	- `vim` 已实现：创建 `~/.vim/undo`，并将 `~/.vimrc` 软链接到仓库配置
 	- `bash` 已实现：在已有 `~/.bashrc` 末尾复制仓库 `bashrc` 内容，并写入标识 `## MARK: HAS SETUP BY MUSCA`（幂等）
-	- `tmux` / `fzf` / `mosh` / `opencode` 仍在待实现状态
+	- `tmux` 已实现：将 `~/.tmux.conf` 软链接到仓库配置，必要时自动备份原配置（幂等）
+	- `fzf` / `mosh` / `opencode` 仍在待实现状态
 	- 每完成一个模块，就在上面的 To-Do 中打勾
 
 4. 后续目标
@@ -75,4 +76,4 @@
 ### 4) Cheatsheet
 
 - 快速参考见：[`CHEATSHEET.md`](./CHEATSHEET.md)
-- 内容覆盖：`setup.sh` 常用参数、`vim` 常用操作、`bash` 常用命令
+- 内容覆盖：`setup.sh` 常用参数、`vim` / `bash` / `tmux` 常用操作

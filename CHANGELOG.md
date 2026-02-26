@@ -6,6 +6,7 @@ All notable changes to this repository are documented in this file.
 
 ### Added
 - Added `CHEATSHEET.md` for quick daily reference.
+- Added `tmux/tmux.conf` with `C-a` prefix, mouse support, pane split bindings, and reload shortcut.
 
 ### Changed
 - Updated `README.md` cheatsheet section to link to `CHEATSHEET.md`.
@@ -15,6 +16,11 @@ All notable changes to this repository are documented in this file.
   - smart search (`ignorecase` + `smartcase` + `incsearch` + `hlsearch`)
   - split direction defaults (`splitright`, `splitbelow`)
   - persistent undo and `<C-l>` nohlsearch mapping
+- Implemented `setup_tmux` in `setup.sh`:
+  - backup unmanaged existing `~/.tmux.conf`
+  - managed symlink to repository `tmux/tmux.conf`
+- Updated progress in `README.md`: marked `tmux` as done.
+- Expanded `CHEATSHEET.md` with `tmux` usage and keybindings.
 
 ## 2026-02-25
 

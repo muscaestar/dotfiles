@@ -73,6 +73,38 @@ cd -
 <C-w>h/j/k/l
 ```
 
+## tmux
+
+```tmux
+# 当前配置要点（来自 tmux/tmux.conf）
+prefix: C-a
+reload: prefix + r
+horizontal split: prefix + |
+vertical split: prefix + _
+```
+
+```bash
+# 启动 / 连接
+tmux
+tmux new -s work
+tmux attach -t work
+
+# 会话管理
+tmux ls
+tmux kill-session -t work
+```
+
+```tmux
+# 窗口与面板
+prefix + c        # 新建窗口
+prefix + n / p    # 下一个 / 上一个窗口
+prefix + 1..9     # 跳转窗口
+prefix + |        # 左右分屏
+prefix + _        # 上下分屏
+prefix + x        # 关闭当前面板
+prefix + z        # 当前面板最大化/还原
+```
+
 ## Git（在本仓库中）
 
 ```bash

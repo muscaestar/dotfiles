@@ -193,8 +193,42 @@ setup_vim() {
 }
 
 setup_tmux() {
-	# TODO: 后续在这里放 tmux.conf 的链接与同步逻辑
-	log "[todo] setup_tmux not implemented yet"
+	# 仓库中的 tmux 配置源文件，以及用户主目录目标位置
+	local source_tmux_conf="$REPO_ROOT/tmux/tmux.conf"
+	local target_tmux_conf="$HOME/.tmux.conf"
+	local backup_path=""
+
+	# 若源文件不存在，则直接跳过，避免脚本中断
+	if [[ ! -f "$source_tmux_conf" ]]; then
+		warn "tmux source config not found: $source_tmux_conf"
+		return 0
+	fi
+
+	# 仅当目标不是当前仓库托管链接时，才准备备份
+	if [[ -e "$target_tmux_conf" || -L "$target_tmux_conf" ]]; then
+		if [[ "$(readlink -f "$target_tmux_conf" 2>/dev/null || true)" != "$source_tmux_conf" ]]; then
+			backup_path="$target_tmux_conf.bak.$(date +%Y%m%d%H%M%S)"
+		fi
+	fi
+
+	# 预览模式只输出将执行的动作，不改动系统
+	if [[ "$APPLY_MODE" -eq 0 ]]; then
+		if [[ -n "$backup_path" ]]; then
+			log "Preview: would backup existing $target_tmux_conf to $backup_path"
+		fi
+		log "Preview: would link $target_tmux_conf -> $source_tmux_conf"
+		return 0
+	fi
+
+	# 应用模式：在必要时备份原有 tmux.conf
+	if [[ -n "$backup_path" ]]; then
+		mv "$target_tmux_conf" "$backup_path"
+		log "Backed up existing tmux config to $backup_path"
+	fi
+
+	# 建立（或覆盖）软链接，统一由仓库管理 ~/.tmux.conf
+	ln -sfn "$source_tmux_conf" "$target_tmux_conf"
+	log "[ok] tmux configured: $target_tmux_conf -> $source_tmux_conf"
 }
 
 setup_mosh() {
