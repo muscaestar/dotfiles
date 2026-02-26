@@ -29,6 +29,7 @@
 - [ ] fzf
 - [ ] mosh
 - [x] opencode
+- [ ] opencode配置逻辑：不能覆盖已有配置
 
 
 ### 2) 依赖的环境变量
