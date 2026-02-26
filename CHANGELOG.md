@@ -21,6 +21,11 @@ All notable changes to this repository are documented in this file.
   - managed symlink to repository `tmux/tmux.conf`
 - Updated progress in `README.md`: marked `tmux` as done.
 - Expanded `CHEATSHEET.md` with `tmux` usage and keybindings.
+- Added `tmux` troubleshooting notes in `CHEATSHEET.md`:
+  - `tmux attach` does not auto-reload updated `~/.tmux.conf`
+  - use `tmux source-file ~/.tmux.conf` or restart server with `tmux kill-server`
+- Updated `tmux/tmux.conf` to use explicit window option scope for current window style:
+  - `set -w -g window-status-current-style fg=white,bold,bg=red`
 
 ## 2026-02-25
 

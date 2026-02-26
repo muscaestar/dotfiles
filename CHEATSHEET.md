@@ -105,6 +105,27 @@ prefix + x        # 关闭当前面板
 prefix + z        # 当前面板最大化/还原
 ```
 
+```bash
+# 排查：为什么配置没生效
+# 1) 检查 ~/.tmux.conf 是否已链接到仓库配置
+ls -la ~/.tmux.conf
+readlink -f ~/.tmux.conf
+
+# 2) 检查当前 tmux server 实际前缀
+tmux show -g prefix
+
+# 3) attach 旧 server 不会自动重读配置，手动重载
+tmux source-file ~/.tmux.conf
+tmux show -g prefix
+
+# 4) 仍异常时重启 server
+tmux kill-server
+tmux
+```
+
+- 结论：`tmux attach` 连接的是已运行的 server，默认不会自动加载新的 `~/.tmux.conf`。
+- 日常建议：改完配置后用 `prefix + r`（即 `C-a` 然后 `r`）立即重载。
+
 ## Git（在本仓库中）
 
 ```bash
