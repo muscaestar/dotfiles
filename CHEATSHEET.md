@@ -14,6 +14,9 @@ bash ./setup.sh --apply --apt-update
 
 # 安装 opencode（示例）
 OPENCODE_INSTALL_CMD="<your install command>" bash ./setup.sh --apply
+
+# 默认 opencode 安装命令（apply 模式会执行）
+curl -fsSL https://opencode.ai/install | bash
 ```
 
 ## Bash
@@ -125,6 +128,32 @@ tmux
 
 - 结论：`tmux attach` 连接的是已运行的 server，默认不会自动加载新的 `~/.tmux.conf`。
 - 日常建议：改完配置后用 `prefix + r`（即 `C-a` 然后 `r`）立即重载。
+
+## opencode
+
+```bash
+# 配置文件路径（由 setup.sh 维护链接）
+~/.config/opencode/opencode.json
+
+# 设置 provider API Key（bash）
+export BAILIAN_API_KEY="<your_api_key>"
+
+# 检查是否已安装
+command -v opencode
+
+# 查看版本（若支持）
+opencode --version
+
+# 使用 setup.sh 安装（默认官方安装命令）
+bash ./setup.sh --apply
+
+# 自定义安装命令
+OPENCODE_INSTALL_CMD="<your install command>" bash ./setup.sh --apply
+
+# 检查配置链接是否正确
+ls -la ~/.config/opencode/opencode.json
+readlink -f ~/.config/opencode/opencode.json
+```
 
 ## Git（在本仓库中）
 

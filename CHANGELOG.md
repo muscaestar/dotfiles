@@ -7,6 +7,8 @@ All notable changes to this repository are documented in this file.
 ### Added
 - Added `CHEATSHEET.md` for quick daily reference.
 - Added `tmux/tmux.conf` with `C-a` prefix, mouse support, pane split bindings, and reload shortcut.
+- Added `opencode` section in `CHEATSHEET.md` (install/check/version quick commands).
+- Added `opencode/opencode.json` provider template with `bailian-coding-plan-test` models.
 
 ### Changed
 - Updated `README.md` cheatsheet section to link to `CHEATSHEET.md`.
@@ -26,6 +28,15 @@ All notable changes to this repository are documented in this file.
   - use `tmux source-file ~/.tmux.conf` or restart server with `tmux kill-server`
 - Updated `tmux/tmux.conf` to use explicit window option scope for current window style:
   - `set -w -g window-status-current-style fg=white,bold,bg=red`
+- Implemented default `opencode` install command in `setup.sh`:
+  - `curl -fsSL https://opencode.ai/install | bash`
+  - still supports `OPENCODE_INSTALL_CMD` override
+- Updated `README.md` progress: marked `opencode` as done.
+- Implemented `setup_opencode` config management:
+  - creates `~/.config/opencode` when needed
+  - backups unmanaged existing `~/.config/opencode/opencode.json`
+  - managed symlink to repository `opencode/opencode.json`
+- Updated docs for provider API key env var: `BAILIAN_API_KEY`.
 
 ## 2026-02-25
 

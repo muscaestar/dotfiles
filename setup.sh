@@ -9,20 +9,30 @@ set -euo pipefail
 # - 可扩展：每个模块都预留了独立函数，后续逐步填充
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# 运行模式与可选参数
 APPLY_MODE=0
 RUN_APT_UPDATE=0
+
+# opencode 安装命令：支持环境变量覆盖 + 默认官方安装命令
 OPENCODE_INSTALL_CMD="${OPENCODE_INSTALL_CMD:-}"
+OPENCODE_DEFAULT_INSTALL_CMD='curl -fsSL https://opencode.ai/install | bash'
+
+# 基础包与最终检查工具列表
 PACKAGES=(vim tmux mosh bash fzf)
 TOOLS=(vim bash tmux fzf mosh opencode)
 
+# 日志输出函数
 log() {
 	printf '[dotfiles/setup] %s\n' "$*"
 }
 
+# 警告输出函数
 warn() {
 	printf '[dotfiles/setup][warn] %s\n' "$*"
 }
 
+# 帮助信息
 usage() {
 	cat <<'EOF'
 Usage:
@@ -33,11 +43,14 @@ Usage:
 
 Optional env:
 	OPENCODE_INSTALL_CMD="<your install command>"
-	                        # 例如: OPENCODE_INSTALL_CMD="npm i -g @foo/opencode"
+	                        # 默认: curl -fsSL https://opencode.ai/install | bash
+	BAILIAN_API_KEY="<your api key>"
+	                        # opencode provider 配置中使用的 API Key 环境变量
 EOF
 }
 
 parse_args() {
+	# 解析命令行参数
 	for arg in "$@"; do
 		case "$arg" in
 			--apply)
@@ -60,6 +73,7 @@ parse_args() {
 }
 
 require_command() {
+	# 校验依赖命令是否存在
 	local cmd="$1"
 	if ! command -v "$cmd" >/dev/null 2>&1; then
 		warn "Missing required command: $cmd"
@@ -68,12 +82,14 @@ require_command() {
 }
 
 check_environment() {
+	# 启动前环境检查
 	log "Repository root: $REPO_ROOT"
 	require_command bash
 	require_command grep
 }
 
 install_base_packages() {
+	# 基础包安装阶段（仅 apply 模式执行）
 	local install_prefix=()
 
 	if ! command -v apt >/dev/null 2>&1; then
@@ -108,6 +124,7 @@ install_base_packages() {
 }
 
 setup_bash() {
+	# bash 模块：复制仓库 bashrc 内容到 ~/.bashrc（带幂等标记）
 	# 仓库中的 Bash 配置源文件，以及用户主目录目标位置
 	local source_bashrc="$REPO_ROOT/bash/bashrc"
 	local target_bashrc="$HOME/.bashrc"
@@ -150,6 +167,7 @@ setup_bash() {
 }
 
 setup_vim() {
+	# vim 模块：管理 ~/.vimrc 软链接并准备 undo 目录
 	# 仓库中的 Vim 配置源文件，以及用户主目录目标位置
 	local source_vimrc="$REPO_ROOT/vim/vimrc"
 	local target_vimrc="$HOME/.vimrc"
@@ -193,6 +211,7 @@ setup_vim() {
 }
 
 setup_tmux() {
+	# tmux 模块：管理 ~/.tmux.conf 软链接
 	# 仓库中的 tmux 配置源文件，以及用户主目录目标位置
 	local source_tmux_conf="$REPO_ROOT/tmux/tmux.conf"
 	local target_tmux_conf="$HOME/.tmux.conf"
@@ -232,36 +251,101 @@ setup_tmux() {
 }
 
 setup_mosh() {
+	# mosh 模块（预留）
 	# TODO: 后续在这里放 mosh 相关默认参数与说明
 	log "[todo] setup_mosh not implemented yet"
 }
 
 setup_fzf() {
+	# fzf 模块（预留）
 	# TODO: 后续在这里放 fzf 默认快捷键/补全初始化
 	log "[todo] setup_fzf not implemented yet"
 }
 
 setup_opencode() {
+	# opencode 安装与配置入口
+	#
+	# 行为概述：
+	# 1) 安装 opencode（若系统中尚未存在）
+	#    - 默认执行 OPENCODE_DEFAULT_INSTALL_CMD
+	#    - 若设置 OPENCODE_INSTALL_CMD，则优先使用用户自定义命令
+	# 2) 管理 opencode 配置文件
+	#    - 仓库模板：$REPO_ROOT/opencode/opencode.json
+	#    - 目标路径：~/.config/opencode/opencode.json
+	#    - 若目标文件不是当前仓库托管链接，则先备份再覆盖为软链接
+	# 3) 预览模式（默认）仅输出将执行动作，不改动系统
+	#
+	# 相关环境变量：
+	# - OPENCODE_INSTALL_CMD：可选，自定义安装命令
+	# - BAILIAN_API_KEY：provider 配置中引用的 API Key（在 opencode.json 中使用）
+
+	# 解析安装命令：优先用户传入，回退到默认命令
+	local install_cmd="${OPENCODE_INSTALL_CMD:-$OPENCODE_DEFAULT_INSTALL_CMD}"
+
+	# 定义 opencode 配置模板源路径与用户侧目标路径
+	local source_config="$REPO_ROOT/opencode/opencode.json"
+	local target_config="$HOME/.config/opencode/opencode.json"
+
+	# 预先声明目录与备份变量
+	local target_config_dir
+	local backup_path=""
+
+	# 计算目标配置目录（通常为 ~/.config/opencode）
+	target_config_dir="$(dirname "$target_config")"
+
+	# 阶段 1：安装 opencode（二进制不存在时才尝试安装）
 	if command -v opencode >/dev/null 2>&1; then
 		log "[ok] opencode already installed"
+	else
+		# 预览模式：仅展示将执行的安装命令
+		if [[ "$APPLY_MODE" -eq 0 ]]; then
+			warn "[missing] opencode"
+			log "Preview: would run opencode install command: $install_cmd"
+		else
+			# 应用模式：执行安装命令
+			log "Installing opencode..."
+			bash -lc "$install_cmd"
+		fi
+	fi
+
+	# 阶段 2：检查仓库中的 provider 配置模板是否存在
+	if [[ ! -f "$source_config" ]]; then
+		warn "opencode provider config template not found: $source_config"
 		return 0
 	fi
 
+	# 阶段 3：判断目标配置是否需要备份
+	# 仅当目标存在且不是当前仓库托管链接时，才生成备份路径
+	if [[ -e "$target_config" || -L "$target_config" ]]; then
+		if [[ "$(readlink -f "$target_config" 2>/dev/null || true)" != "$source_config" ]]; then
+			backup_path="$target_config.bak.$(date +%Y%m%d%H%M%S)"
+		fi
+	fi
+
+	# 阶段 4：预览模式下输出配置落地动作，不做实际修改
 	if [[ "$APPLY_MODE" -eq 0 ]]; then
-		warn "[missing] opencode"
-		log "Preview: set OPENCODE_INSTALL_CMD then rerun with --apply"
+		log "Preview: would create directory $target_config_dir"
+		if [[ -n "$backup_path" ]]; then
+			log "Preview: would backup existing $target_config to $backup_path"
+		fi
+		log "Preview: would link $target_config -> $source_config"
 		return 0
 	fi
 
-	if [[ -z "$OPENCODE_INSTALL_CMD" ]]; then
-		warn "opencode install command is not configured."
-		warn "Set OPENCODE_INSTALL_CMD and rerun in apply mode."
-		return 0
+	# 阶段 5：应用模式下创建目标目录
+	mkdir -p "$target_config_dir"
+
+	# 阶段 6：如有需要，先备份用户现有配置
+	if [[ -n "$backup_path" ]]; then
+		mv "$target_config" "$backup_path"
+		log "Backed up existing opencode config to $backup_path"
 	fi
 
-	log "Installing opencode with OPENCODE_INSTALL_CMD..."
-	bash -lc "$OPENCODE_INSTALL_CMD"
+	# 阶段 7：建立（或覆盖）软链接，统一由仓库模板管理配置
+	ln -sfn "$source_config" "$target_config"
+	log "[ok] opencode config linked: $target_config -> $source_config"
 
+	# 阶段 8：安装结果复检（PATH 生效可能受当前 shell 会话影响）
 	if command -v opencode >/dev/null 2>&1; then
 		log "[ok] opencode installed"
 	else
@@ -271,6 +355,7 @@ setup_opencode() {
 }
 
 report_status() {
+	# 汇总检查所有工具可用性
 	log "Checking tool availability..."
 	for tool in "${TOOLS[@]}"; do
 		if command -v "$tool" >/dev/null 2>&1; then
@@ -282,6 +367,7 @@ report_status() {
 }
 
 main() {
+	# 主流程：参数解析 -> 环境检查 -> 安装基础包 -> 配置各模块 -> 最终状态汇总
 	parse_args "$@"
 	check_environment
 

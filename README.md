@@ -28,7 +28,7 @@
 - [x] tmux
 - [ ] fzf
 - [ ] mosh
-- [ ] opencode
+- [x] opencode
 
 
 ### 2) 依赖的环境变量
@@ -37,7 +37,8 @@
 - `SHELL`：默认 shell（本仓库目标为 bash）
 - `TERM`：终端能力声明（影响 tmux/vim 显示）
 - `EDITOR`：命令行默认编辑器（建议设为 `vim`）
-- `OPENCODE_INSTALL_CMD`：`opencode` 的安装命令（可选，仅在 `--apply` 时使用）
+- `OPENCODE_INSTALL_CMD`：`opencode` 的安装命令（可选，默认使用 `curl -fsSL https://opencode.ai/install | bash`）
+- `BAILIAN_API_KEY`：`opencode` provider 配置中引用的 API Key 环境变量
 
 
 ### 3) 如何使用
@@ -57,7 +58,9 @@
 
 	- 需要实际安装时使用：`bash ./setup.sh --apply`
 	- 默认不会执行 `apt update`；如需执行可加：`--apt-update`
-	- 安装 `opencode` 时可临时传入：
+	- 安装 `opencode` 默认执行：
+	  `curl -fsSL https://opencode.ai/install | bash`
+	- 如需自定义安装命令可临时传入：
 	  `OPENCODE_INSTALL_CMD="<your install command>" bash ./setup.sh --apply`
 
 3. 当前状态（预留位）
@@ -66,7 +69,9 @@
 	- `vim` 已实现：创建 `~/.vim/undo`，并将 `~/.vimrc` 软链接到仓库配置
 	- `bash` 已实现：在已有 `~/.bashrc` 末尾复制仓库 `bashrc` 内容，并写入标识 `## MARK: HAS SETUP BY MUSCA`（幂等）
 	- `tmux` 已实现：将 `~/.tmux.conf` 软链接到仓库配置，必要时自动备份原配置（幂等）
-	- `fzf` / `mosh` / `opencode` 仍在待实现状态
+	- `opencode` 已实现：默认执行官方安装命令，支持 `OPENCODE_INSTALL_CMD` 覆写
+	- `opencode` 配置已实现：将 `~/.config/opencode/opencode.json` 软链接到仓库模板，并支持通过 `BAILIAN_API_KEY` 提供 provider API Key
+	- `fzf` / `mosh` 仍在待实现状态
 	- 每完成一个模块，就在上面的 To-Do 中打勾
 
 4. 后续目标
@@ -76,4 +81,4 @@
 ### 4) Cheatsheet
 
 - 快速参考见：[`CHEATSHEET.md`](./CHEATSHEET.md)
-- 内容覆盖：`setup.sh` 常用参数、`vim` / `bash` / `tmux` 常用操作
+- 内容覆盖：`setup.sh` 常用参数、`vim` / `bash` / `tmux` / `opencode` 常用操作
