@@ -74,4 +74,5 @@
 
 ### 4) Cheatsheet
 
-- 待补充
+- 快速参考见：[`CHEATSHEET.md`](./CHEATSHEET.md)
+- 内容覆盖：`setup.sh` 常用参数、`vim` 常用操作、`bash` 常用命令

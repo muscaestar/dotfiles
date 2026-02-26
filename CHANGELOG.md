@@ -2,6 +2,20 @@
 
 All notable changes to this repository are documented in this file.
 
+## 2026-02-26
+
+### Added
+- Added `CHEATSHEET.md` for quick daily reference.
+
+### Changed
+- Updated `README.md` cheatsheet section to link to `CHEATSHEET.md`.
+- Expanded Vim section in `CHEATSHEET.md` to match `vim/vimrc` behavior:
+  - 4-space indentation defaults
+  - line number / relative number / cursorline
+  - smart search (`ignorecase` + `smartcase` + `incsearch` + `hlsearch`)
+  - split direction defaults (`splitright`, `splitbelow`)
+  - persistent undo and `<C-l>` nohlsearch mapping
+
 ## 2026-02-25
 
 ### Changed
