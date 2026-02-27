@@ -29,7 +29,7 @@
 - [ ] fzf
 - [ ] mosh
 - [x] opencode
-- [ ] opencode配置逻辑：不能覆盖已有配置
+- [x] opencode配置逻辑：不能覆盖已有配置
 
 
 ### 2) 依赖的环境变量
@@ -71,7 +71,7 @@
 	- `bash` 已实现：在已有 `~/.bashrc` 末尾复制仓库 `bashrc` 内容，并写入标识 `## MARK: HAS SETUP BY MUSCA`（幂等）
 	- `tmux` 已实现：将 `~/.tmux.conf` 软链接到仓库配置，必要时自动备份原配置（幂等）
 	- `opencode` 已实现：默认执行官方安装命令，支持 `OPENCODE_INSTALL_CMD` 覆写
-	- `opencode` 配置已实现：将 `~/.config/opencode/opencode.json` 软链接到仓库模板，并支持通过 `BAILIAN_API_KEY` 提供 provider API Key
+	- `opencode` 配置已实现：仅首次用仓库模板初始化 `~/.config/opencode/opencode.json`，若已有配置则保持不覆盖
 	- `fzf` / `mosh` 仍在待实现状态
 	- 每完成一个模块，就在上面的 To-Do 中打勾
 

@@ -2,6 +2,15 @@
 
 All notable changes to this repository are documented in this file.
 
+## 2026-02-27
+
+### Changed
+- Updated `setup_opencode` in `setup.sh` to initialize `~/.config/opencode/opencode.json` only on first run.
+- Changed opencode config behavior from managed overwrite/symlink to non-destructive copy-init:
+  - if target config already exists, setup now keeps it unchanged
+  - setup logs explicit keep-as-is message instead of replacing user config
+- Updated `README.md` progress and status text for "opencode配置逻辑：不能覆盖已有配置".
+
 ## 2026-02-26
 
 ### Added

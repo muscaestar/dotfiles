@@ -269,10 +269,10 @@ setup_opencode() {
 	# 1) 安装 opencode（若系统中尚未存在）
 	#    - 默认执行 OPENCODE_DEFAULT_INSTALL_CMD
 	#    - 若设置 OPENCODE_INSTALL_CMD，则优先使用用户自定义命令
-	# 2) 管理 opencode 配置文件
+	# 2) 初始化 opencode 配置文件（仅首次）
 	#    - 仓库模板：$REPO_ROOT/opencode/opencode.json
 	#    - 目标路径：~/.config/opencode/opencode.json
-	#    - 若目标文件不是当前仓库托管链接，则先备份再覆盖为软链接
+	#    - 若目标文件已存在，则跳过（不覆盖用户已有配置）
 	# 3) 预览模式（默认）仅输出将执行动作，不改动系统
 	#
 	# 相关环境变量：
@@ -286,9 +286,8 @@ setup_opencode() {
 	local source_config="$REPO_ROOT/opencode/opencode.json"
 	local target_config="$HOME/.config/opencode/opencode.json"
 
-	# 预先声明目录与备份变量
+	# 预先声明目录变量
 	local target_config_dir
-	local backup_path=""
 
 	# 计算目标配置目录（通常为 ~/.config/opencode）
 	target_config_dir="$(dirname "$target_config")"
@@ -314,38 +313,27 @@ setup_opencode() {
 		return 0
 	fi
 
-	# 阶段 3：判断目标配置是否需要备份
-	# 仅当目标存在且不是当前仓库托管链接时，才生成备份路径
+	# 阶段 3：若用户已有配置，则严格跳过，不做覆盖
 	if [[ -e "$target_config" || -L "$target_config" ]]; then
-		if [[ "$(readlink -f "$target_config" 2>/dev/null || true)" != "$source_config" ]]; then
-			backup_path="$target_config.bak.$(date +%Y%m%d%H%M%S)"
-		fi
+		log "[ok] opencode config already exists, keep as-is: $target_config"
+		return 0
 	fi
 
-	# 阶段 4：预览模式下输出配置落地动作，不做实际修改
+	# 阶段 4：预览模式下输出首次初始化动作，不做实际修改
 	if [[ "$APPLY_MODE" -eq 0 ]]; then
 		log "Preview: would create directory $target_config_dir"
-		if [[ -n "$backup_path" ]]; then
-			log "Preview: would backup existing $target_config to $backup_path"
-		fi
-		log "Preview: would link $target_config -> $source_config"
+		log "Preview: would create initial opencode config from template: $source_config -> $target_config"
 		return 0
 	fi
 
 	# 阶段 5：应用模式下创建目标目录
 	mkdir -p "$target_config_dir"
 
-	# 阶段 6：如有需要，先备份用户现有配置
-	if [[ -n "$backup_path" ]]; then
-		mv "$target_config" "$backup_path"
-		log "Backed up existing opencode config to $backup_path"
-	fi
+	# 阶段 6：首次初始化时复制模板文件到用户配置路径
+	cp "$source_config" "$target_config"
+	log "[ok] opencode config initialized: $target_config"
 
-	# 阶段 7：建立（或覆盖）软链接，统一由仓库模板管理配置
-	ln -sfn "$source_config" "$target_config"
-	log "[ok] opencode config linked: $target_config -> $source_config"
-
-	# 阶段 8：安装结果复检（PATH 生效可能受当前 shell 会话影响）
+	# 阶段 7：安装结果复检（PATH 生效可能受当前 shell 会话影响）
 	if command -v opencode >/dev/null 2>&1; then
 		log "[ok] opencode installed"
 	else
